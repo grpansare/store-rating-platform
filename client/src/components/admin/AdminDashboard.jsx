@@ -170,7 +170,7 @@ const AdminDashboard = () => {
                       to="/admin/stores" 
                       className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                     >
-                      <Store size={20} className="text-green-600 mr-3" />
+                      <Store size={20} className="text-purple-600 mr-3" />
                       <span className="font-medium text-gray-900">Manage Stores</span>
                     </Link>
                   </div>

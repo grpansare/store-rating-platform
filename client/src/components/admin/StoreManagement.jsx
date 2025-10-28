@@ -119,7 +119,7 @@ const StoreList = () => {
           <Search size={20} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#666' }} />
           <input
             type="text"
-            placeholder="Search by name or address..."
+            placeholder="Search by name or address... (e.g., Sharma General Store, Mumbai)"
             value={filters.search}
             onChange={(e) => handleFilterChange('search', e.target.value)}
             style={{ 
@@ -156,7 +156,7 @@ const StoreList = () => {
           <div className="loading-spinner"></div>
         </div>
       ) : (
-        <>
+        <div>
           <div className="table-container">
             <table className="data-table" style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <thead>
@@ -228,30 +228,70 @@ const StoreList = () => {
             </table>
           </div>
 
+          {/* Pagination */}
           {pagination.pages > 1 && (
-            <div className="pagination">
-              <button
-                onClick={() => handleFilterChange('page', pagination.page - 1)}
-                disabled={pagination.page === 1}
-                className="btn btn-secondary"
-              >
-                Previous
-              </button>
-              
-              <span className="pagination-info">
-                Page {pagination.page} of {pagination.pages} ({pagination.total} total)
-              </span>
-              
-              <button
-                onClick={() => handleFilterChange('page', pagination.page + 1)}
-                disabled={pagination.page === pagination.pages}
-                className="btn btn-secondary"
-              >
-                Next
-              </button>
+            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-6 rounded-lg shadow-sm">
+              <div className="flex-1 flex justify-between sm:hidden">
+                <button
+                  onClick={() => handleFilterChange('page', pagination.page - 1)}
+                  disabled={pagination.page === 1}
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => handleFilterChange('page', pagination.page + 1)}
+                  disabled={pagination.page === pagination.pages}
+                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+              </div>
+              <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm text-gray-700">
+                    Showing page <span className="font-medium">{pagination.page}</span> of{' '}
+                    <span className="font-medium">{pagination.pages}</span> ({pagination.total} total stores)
+                  </p>
+                </div>
+                <div>
+                  <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    <button
+                      onClick={() => handleFilterChange('page', pagination.page - 1)}
+                      disabled={pagination.page === 1}
+                      className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all duration-200"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={() => handleFilterChange('page', pagination.page + 1)}
+                      disabled={pagination.page === pagination.pages}
+                      className="relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all duration-200"
+                    >
+                      Next
+                    </button>
+                  </nav>
+                </div>
+              </div>
             </div>
           )}
-        </>
+
+          {/* Empty State */}
+          {!loading && stores.length === 0 && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+              <div className="text-gray-400 text-6xl mb-4">🏪</div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No stores found</h3>
+              <p className="text-gray-600 mb-6">Get started by adding your first store to the system.</p>
+              <Link 
+                to="/admin/stores/new" 
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-violet-700 text-white rounded-lg hover:from-violet-700 hover:to-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+              >
+                <Plus size={20} className="mr-2" />
+                Add First Store
+              </Link>
+            </div>
+          )}
+        </div>
       )}
     </div>
   )
@@ -391,7 +431,7 @@ const StoreForm = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Enter store name"
+            placeholder="Enter store name (e.g., Patel Electronics, Gupta Sweets)"
             required
             style={{ 
               width: '100%', 
@@ -412,7 +452,7 @@ const StoreForm = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Enter store email"
+            placeholder="Enter store email (e.g., contact@sharmastore.in)"
             required
             style={{ 
               width: '100%', 
@@ -432,7 +472,7 @@ const StoreForm = () => {
             name="address"
             value={formData.address}
             onChange={handleChange}
-            placeholder="Enter store address (max 400 characters)"
+            placeholder="Enter store address (e.g., Shop No. 15, MG Road, Connaught Place, New Delhi - 110001)"
             rows="3"
             required
             style={{ 

@@ -8,8 +8,10 @@ const router = express.Router();
 // Submit or update rating
 router.post('/', authenticateToken, requireAuth, validateRating, async (req, res) => {
   try {
-    const { store_id, rating } = req.body;
+    const { store_id, rating, comment } = req.body;
     const user_id = req.user.id;
+    
+    console.log('Rating submission data:', { store_id, rating, comment, user_id });
 
     // Check if store exists
     const [stores] = await pool.execute(
@@ -29,18 +31,22 @@ router.post('/', authenticateToken, requireAuth, validateRating, async (req, res
 
     if (existingRating.length > 0) {
       // Update existing rating
+      console.log('Updating existing rating with comment:', comment);
       await pool.execute(
-        'UPDATE ratings SET rating = ? WHERE user_id = ? AND store_id = ?',
-        [rating, user_id, store_id]
+        'UPDATE ratings SET rating = ?, comment = ? WHERE user_id = ? AND store_id = ?',
+        [rating, comment || null, user_id, store_id]
       );
+      console.log('Rating updated successfully in database');
 
       res.json({ message: 'Rating updated successfully' });
     } else {
       // Insert new rating
+      console.log('Inserting new rating with comment:', comment);
       await pool.execute(
-        'INSERT INTO ratings (user_id, store_id, rating) VALUES (?, ?, ?)',
-        [user_id, store_id, rating]
+        'INSERT INTO ratings (user_id, store_id, rating, comment) VALUES (?, ?, ?, ?)',
+        [user_id, store_id, rating, comment || null]
       );
+      console.log('New rating inserted successfully in database');
 
       res.status(201).json({ message: 'Rating submitted successfully' });
     }
@@ -57,7 +63,7 @@ router.get('/store/:store_id', authenticateToken, requireAuth, async (req, res) 
     const user_id = req.user.id;
 
     const [ratings] = await pool.execute(
-      'SELECT rating, created_at, updated_at FROM ratings WHERE user_id = ? AND store_id = ?',
+      'SELECT rating, comment, created_at, updated_at FROM ratings WHERE user_id = ? AND store_id = ?',
       [user_id, store_id]
     );
 
@@ -78,7 +84,7 @@ router.get('/my-ratings', authenticateToken, requireAuth, async (req, res) => {
     const user_id = req.user.id;
 
     const [ratings] = await pool.execute(
-      `SELECT r.id, r.rating, r.created_at, r.updated_at,
+      `SELECT r.id, r.rating, r.comment, r.created_at, r.updated_at,
               s.id as store_id, s.name as store_name, s.address as store_address
        FROM ratings r
        JOIN stores s ON r.store_id = s.id

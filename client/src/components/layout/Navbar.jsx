@@ -43,7 +43,7 @@ const Navbar = () => {
             
             <div className="relative">
               <button
-                className="flex items-center p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200"
+                className="flex items-center p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-colors duration-200"
                 onClick={() => setShowUserMenu(!showUserMenu)}
               >
                 <User size={20} />

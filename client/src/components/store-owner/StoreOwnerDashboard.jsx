@@ -24,7 +24,7 @@ const StoreOwnerDashboard = () => {
             end 
             className={({ isActive }) => `flex items-center px-6 py-3 text-sm font-medium transition-colors duration-200 ${
               isActive 
-                ? 'text-primary-600 bg-primary-50 border-r-2 border-primary-600' 
+                ? 'text-violet-600 bg-violet-50 border-r-2 border-violet-600' 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
@@ -35,7 +35,7 @@ const StoreOwnerDashboard = () => {
             to="/store-owner/profile" 
             className={({ isActive }) => `flex items-center px-6 py-3 text-sm font-medium transition-colors duration-200 ${
               isActive 
-                ? 'text-primary-600 bg-primary-50 border-r-2 border-primary-600' 
+                ? 'text-violet-600 bg-violet-50 border-r-2 border-violet-600' 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >

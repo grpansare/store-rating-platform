@@ -56,6 +56,10 @@ const validateRating = [
   body('store_id')
     .isInt({ min: 1 })
     .withMessage('Valid store ID is required'),
+  body('comment')
+    .optional()
+    .isLength({ max: 1000 })
+    .withMessage('Comment must not exceed 1000 characters'),
   handleValidationErrors
 ];
 

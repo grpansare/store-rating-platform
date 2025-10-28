@@ -98,11 +98,11 @@ const generateToken = (userId, email, role) => {
  *                 type: string
  *                 minLength: 20
  *                 maxLength: 60
- *                 example: "John Smith Customer Name"
+ *                 example: "Rajesh Kumar Singh"
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "john@example.com"
+ *                 example: "rajesh@example.com"
  *               password:
  *                 type: string
  *                 minLength: 8
@@ -111,7 +111,7 @@ const generateToken = (userId, email, role) => {
  *               address:
  *                 type: string
  *                 maxLength: 400
- *                 example: "123 Main Street, City, State"
+ *                 example: "A-204, Sector 15, Noida, Uttar Pradesh - 201301"
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -244,7 +244,9 @@ router.post('/login', validateLogin, async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        address: user.address,
+        created_at: user.created_at
       }
     });
   } catch (error) {
@@ -410,15 +412,35 @@ router.put('/password', authenticateToken, requireAuth, validatePasswordUpdate, 
  *         description: Internal server error
  */
 // Verify token (for frontend to check if token is still valid)
-router.get('/verify', authenticateToken, requireAuth, (req, res) => {
-  res.json({
-    valid: true,
-    user: {
-      id: req.user.id,
-      email: req.user.email,
-      role: req.user.role
+router.get('/verify', authenticateToken, requireAuth, async (req, res) => {
+  try {
+    // Get complete user data including name
+    const [users] = await pool.execute(
+      'SELECT id, name, email, role, address, created_at FROM users WHERE id = ?',
+      [req.user.id]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
     }
-  });
+
+    const user = users[0];
+    
+    res.json({
+      valid: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        address: user.address,
+        created_at: user.created_at
+      }
+    });
+  } catch (error) {
+    console.error('Verify token error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 module.exports = router;

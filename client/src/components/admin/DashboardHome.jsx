@@ -42,7 +42,7 @@ const DashboardHome = () => {
       <h2 className="text-xl font-semibold text-gray-800 mb-6">Dashboard Overview</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {/* Total Users Card */}
+      
         <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-100 text-blue-600">
@@ -68,7 +68,6 @@ const DashboardHome = () => {
           </div>
         </div>
 
-        {/* Total Ratings Card */}
         <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">

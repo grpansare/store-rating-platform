@@ -136,36 +136,178 @@ A full-stack web application for store ratings with role-based access control.
 - id, user_id, store_id, rating, timestamps
 - Unique constraint on (user_id, store_id)
 
-## Security Features
+## 🔒 Security Features
 
-- JWT authentication
-- Password hashing with bcrypt
-- Rate limiting
-- CORS protection
-- Helmet security headers
-- Input validation and sanitization
+### Authentication & Authorization
+- 🔐 **JWT Authentication**: Secure token-based authentication
+- 🔒 **Password Hashing**: bcrypt with salt rounds for secure password storage
+- 👥 **Role-Based Access**: Granular permissions for different user types
+- ⏱️ **Token Expiration**: Automatic session management
 
-## Development
+### API Security
+- 🚫 **Rate Limiting**: Prevent API abuse and DDoS attacks
+- 🌐 **CORS Protection**: Configured cross-origin resource sharing
+- 🛡️ **Helmet.js**: Security headers for XSS, clickjacking protection
+- ✅ **Input Validation**: Comprehensive data validation and sanitization
+- 📝 **SQL Injection Prevention**: Parameterized queries and ORM protection
 
+### Data Protection
+- 🔍 **Environment Variables**: Sensitive data stored securely
+- 📊 **Audit Logging**: Track user actions and system events
+- 🔄 **Data Backup**: Regular database backup recommendations
+
+## 🛠️ Development
+
+### Available Scripts
+
+#### Backend Commands
 ```bash
-# Start backend in development mode
+# Start development server with hot reload
 npm run dev
 
-# Start frontend (after setup)
-npm run client
+# Start production server
+npm start
+
+# Run database migrations
+npm run migrate
+
+# Seed database with sample data
+npm run seed
+```
+
+#### Frontend Commands
+```bash
+cd client
+
+# Start development server
+npm run dev
 
 # Build for production
 npm run build
+
+# Preview production build
+npm run preview
+
+# Run linting
+npm run lint
 ```
 
-## Production Deployment
+### Development Workflow
+1. **Feature Development**: Create feature branches from `main`
+2. **Code Quality**: Use ESLint and Prettier for consistent code style
+3. **Testing**: Write unit tests for new features
+4. **Documentation**: Update API documentation for new endpoints
+5. **Review**: Submit pull requests for code review
 
-1. Set `NODE_ENV=production`
-2. Update CORS origins in server.js
-3. Build React frontend
-4. Configure reverse proxy (nginx recommended)
-5. Use process manager (PM2 recommended)
+### Project Structure
+```
+store-rating-platform/
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── contexts/       # React contexts
+│   │   └── assets/         # Static assets
+│   └── public/             # Public files
+├── config/                # Configuration files
+├── database/              # Database schema and migrations
+├── middleware/            # Express middleware
+├── routes/                # API routes
+└── server.js              # Main server file
+```
 
-## License
+## 🚀 Deployment
 
-MIT License
+### Production Deployment
+
+#### 1. Server Setup
+```bash
+# Clone repository on server
+git clone https://github.com/grpansare/store-rating-platform.git
+cd store-rating-platform
+
+# Install dependencies
+npm install
+cd client && npm install && cd ..
+```
+
+#### 2. Environment Configuration
+```bash
+# Create production environment file
+cp .env.example .env.production
+
+# Update production settings
+NODE_ENV=production
+DB_HOST=your_production_db_host
+JWT_SECRET=your_super_secure_production_secret
+```
+
+#### 3. Build & Deploy
+```bash
+# Build frontend
+cd client && npm run build && cd ..
+
+# Start with PM2 (recommended)
+npm install -g pm2
+pm2 start ecosystem.config.js
+
+# Or start directly
+npm start
+```
+
+#### 4. Nginx Configuration
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+    
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+### Docker Deployment
+```dockerfile
+# Dockerfile example
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 5000
+CMD ["npm", "start"]
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+### Getting Started
+1. **Fork** the repository
+2. **Clone** your fork: `git clone https://github.com/grpansare/store-rating-platform.git`
+3. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+4. **Install** dependencies: `npm install`
+
+### Development Guidelines
+- Follow the existing code style and conventions
+- Write clear, descriptive commit messages
+- Add tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting
+
+### Submitting Changes
+1. **Commit** your changes: `git commit -m 'Add amazing feature'`
+2. **Push** to your branch: `git push origin feature/amazing-feature`
+3. **Submit** a Pull Request with a clear description
+
+### Code of Conduct
+- Be respectful and inclusive
+- Provide constructive feedback
+- Help others learn and grow
+- Follow the project's coding standards
+

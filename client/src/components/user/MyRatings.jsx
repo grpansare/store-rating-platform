@@ -62,11 +62,13 @@ const MyRatings = () => {
 
   // ✅ When editing, load existing data
   const startEditing = (rating) => {
+    console.log('Starting to edit rating:', rating) // Debug log
     setEditingRating(rating)
     setEditData({
       rating: rating.rating,
       comment: rating.comment || '',
     })
+    console.log('Edit data set to:', { rating: rating.rating, comment: rating.comment || '' }) // Debug log
   }
 
   return (
@@ -79,7 +81,7 @@ const MyRatings = () => {
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600 mx-auto"></div>
             <p className="mt-2 text-gray-600">Loading your ratings...</p>
           </div>
         </div>
@@ -146,7 +148,7 @@ const MyRatings = () => {
         </div>
       )}
 
-      {/* ✅ Edit Rating Modal */}
+     
       {editingRating && (
         <div
           className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
@@ -203,7 +205,7 @@ const MyRatings = () => {
                   onChange={(e) =>
                     setEditData((prev) => ({ ...prev, comment: e.target.value }))
                   }
-                  placeholder="Share your experience..."
+                  placeholder="Share your experience... (e.g., Excellent customer service!)"
                   rows="4"
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm resize-none"
                 />

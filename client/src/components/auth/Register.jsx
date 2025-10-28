@@ -71,7 +71,7 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="text-center mb-8">
@@ -96,7 +96,7 @@ const Register = () => {
                   value={formData.name}
                   onChange={handleChange}
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                  placeholder="Enter your full name (20-60 characters)"
+                  placeholder="Enter your full name (e.g., Rajesh Kumar Singh)"
                   required
                 />
               </div>
@@ -118,7 +118,7 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                  placeholder="Enter your email"
+                  placeholder="Enter your email (e.g., rajesh@example.com)"
                   required
                 />
               </div>
@@ -172,7 +172,7 @@ const Register = () => {
                   onChange={handleChange}
                   rows="3"
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm resize-none"
-                  placeholder="Enter your address (max 400 characters)"
+                  placeholder="Enter your address (e.g., A-204, Sector 15, Noida, UP - 201301)"
                 />
               </div>
               {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}

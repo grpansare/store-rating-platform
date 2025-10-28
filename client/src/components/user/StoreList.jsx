@@ -74,7 +74,8 @@ const StoreList = () => {
     try {
       await axios.post('/ratings', {
         store_id: selectedStore.id,
-        rating: ratingData.rating
+        rating: ratingData.rating,
+        comment: ratingData.comment
       })
       toast.success('Rating submitted successfully!')
       setSelectedStore(null)
@@ -87,9 +88,28 @@ const StoreList = () => {
     }
   }
 
-  const openRatingModal = (store) => {
+  const openRatingModal = async (store) => {
     setSelectedStore(store)
-    setRatingData({ rating: store.user_rating || 0, comment: '' })
+    
+    try {
+      const response = await axios.get(`/ratings/store/${store.id}`)
+      console.log('Rating response:', response.data) // Debug log
+      const existingRating = response.data.rating
+      
+      if (existingRating) {
+        console.log('Existing rating found:', existingRating) // Debug log
+        setRatingData({ 
+          rating: existingRating.rating, 
+          comment: existingRating.comment || '' 
+        })
+      } else {
+        console.log('No existing rating found') // Debug log
+        setRatingData({ rating: 0, comment: '' })
+      }
+    } catch (error) {
+      console.error('Error fetching existing rating:', error)
+      setRatingData({ rating: store.user_rating || 0, comment: '' })
+    }
   }
 
   const renderStars = (rating, interactive = false, onStarClick = null) => {
@@ -123,8 +143,8 @@ const StoreList = () => {
               </div>
               <input
                 type="text"
-                placeholder="Search stores..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                placeholder="Search stores... (e.g., Sharma Electronics, Patel Fresh)"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 sm:text-sm transition-all duration-200"
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
               />
@@ -155,7 +175,7 @@ const StoreList = () => {
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600 mx-auto"></div>
             <p className="mt-2 text-gray-600">Loading stores...</p>
           </div>
         </div>
@@ -276,7 +296,7 @@ const StoreList = () => {
                   id="comment"
                   value={ratingData.comment}
                   onChange={(e) => setRatingData(prev => ({ ...prev, comment: e.target.value }))}
-                  placeholder="Share your experience..."
+                  placeholder="Share your experience... (e.g., Great service and quality products!)"
                   rows="4"
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm resize-none"
                 />

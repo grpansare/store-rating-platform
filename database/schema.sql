@@ -37,6 +37,7 @@ CREATE TABLE ratings (
     user_id INT NOT NULL,
     store_id INT NOT NULL,
     rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -67,25 +68,25 @@ INSERT INTO users (name, email, password, address, role) VALUES
 
 -- Insert sample stores for testing
 INSERT INTO stores (name, email, address) VALUES 
-('Tech Store Central', 'contact@techstore.com', '123 Tech Street, Silicon Valley, CA 94000'),
-('Green Grocery Market', 'info@greengrocery.com', '456 Fresh Avenue, Organic City, NY 10001'),
-('Fashion Hub Boutique', 'hello@fashionhub.com', '789 Style Boulevard, Fashion District, LA 90210'),
-('Book Haven Library', 'books@bookhaven.com', '321 Reading Lane, Literary Town, TX 75001'),
-('Coffee Corner Cafe', 'brew@coffeecorner.com', '654 Bean Street, Caffeine City, WA 98001');
+('Sharma Electronics & Mobile', 'contact@sharmaelectronics.in', 'Shop No. 15, Nehru Place Market, New Delhi - 110019'),
+('Patel Fresh Vegetables', 'info@patelfresh.com', '42, Gandhi Road, Ahmedabad, Gujarat - 380001'),
+('Gupta Fashion Boutique', 'hello@guptafashion.in', '78, Commercial Street, Bangalore, Karnataka - 560001'),
+('Agarwal Book Store', 'books@agarwalbooks.com', '23, Connaught Place, New Delhi - 110001'),
+('Chai Wala Corner', 'orders@chaiwala.in', '156, MG Road, Pune, Maharashtra - 411001');
 
 -- Insert sample users for testing
 INSERT INTO users (name, email, password, address, role) VALUES 
-('John Smith Customer', 'john@example.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '100 Customer Street, User City, CA 90000', 'user'),
-('Jane Doe Customer', 'jane@example.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '200 Buyer Avenue, Shopping Town, NY 10000', 'user'),
-('Store Owner Mike', 'mike@storeowner.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '300 Business Road, Commerce City, TX 70000', 'store_owner');
+('Rajesh Kumar Singh', 'rajesh@example.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'A-204, Sector 15, Noida, Uttar Pradesh - 201301', 'user'),
+('Priya Sharma Gupta', 'priya@example.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'B-45, Koramangala, Bangalore, Karnataka - 560034', 'user'),
+('Amit Patel Store Owner', 'amit@storeowner.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Shop 12, Satellite Road, Ahmedabad, Gujarat - 380015', 'store_owner');
 
 -- Update stores to have owners
-UPDATE stores SET owner_id = (SELECT id FROM users WHERE email = 'mike@storeowner.com' LIMIT 1) WHERE id = 1;
+UPDATE stores SET owner_id = (SELECT id FROM users WHERE email = 'amit@storeowner.com' LIMIT 1) WHERE id = 1;
 
 -- Insert sample ratings
 INSERT INTO ratings (user_id, store_id, rating) VALUES 
-((SELECT id FROM users WHERE email = 'john@example.com'), 1, 5),
-((SELECT id FROM users WHERE email = 'jane@example.com'), 1, 4),
-((SELECT id FROM users WHERE email = 'john@example.com'), 2, 3),
-((SELECT id FROM users WHERE email = 'jane@example.com'), 2, 5),
-((SELECT id FROM users WHERE email = 'john@example.com'), 3, 4);
+((SELECT id FROM users WHERE email = 'rajesh@example.com'), 1, 5),
+((SELECT id FROM users WHERE email = 'priya@example.com'), 1, 4),
+((SELECT id FROM users WHERE email = 'rajesh@example.com'), 2, 3),
+((SELECT id FROM users WHERE email = 'priya@example.com'), 2, 5),
+((SELECT id FROM users WHERE email = 'rajesh@example.com'), 3, 4);

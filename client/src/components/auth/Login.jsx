@@ -29,7 +29,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="text-center mb-8">
@@ -54,7 +54,7 @@ const Login = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                  placeholder="Enter your email"
+                  placeholder="Enter your email (e.g., rajesh@example.com)"
                   required
                 />
               </div>
@@ -115,16 +115,16 @@ const Login = () => {
               <div className="bg-red-50 p-3 rounded-lg border border-red-200">
                 <div className="font-medium text-red-800 mb-1">Admin:</div>
                 <div className="text-red-700">admin@storerating.com</div>
-                <div className="text-red-700">Admin@123</div>
+                <div className="text-red-700">password</div>
               </div>
               <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
                 <div className="font-medium text-blue-800 mb-1">User:</div>
-                <div className="text-blue-700">john@example.com</div>
+                <div className="text-blue-700">rajesh@example.com</div>
                 <div className="text-blue-700">password</div>
               </div>
               <div className="bg-green-50 p-3 rounded-lg border border-green-200">
                 <div className="font-medium text-green-800 mb-1">Store Owner:</div>
-                <div className="text-green-700">mike@storeowner.com</div>
+                <div className="text-green-700">amit@storeowner.com</div>
                 <div className="text-green-700">password</div>
               </div>
             </div>

@@ -119,7 +119,7 @@ const UserList = () => {
               </div>
               <input
                 type="text"
-                placeholder="Search users..."
+                placeholder="Search users... (e.g., Rajesh, Priya)"
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
@@ -384,7 +384,7 @@ const UserForm = () => {
             </div>
             <Link 
               to="/admin/users" 
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200"
             >
               ← Back to Users
             </Link>
@@ -457,7 +457,7 @@ const UserForm = () => {
               name="address"
               value={formData.address}
               onChange={handleChange}
-              placeholder="Enter address (optional, max 400 characters)"
+              placeholder="Enter address (e.g., B-45, Koramangala, Bangalore - 560034)"
               rows="3"
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
             />
@@ -529,65 +529,189 @@ const UserDetails = () => {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading user details...</p>
+        </div>
       </div>
     )
   }
 
   if (!user) {
-    return <div>User not found</div>
-  }
-
-  return (
-    <div className="user-details">
-      <div className="page-header">
-        <h1>User Details</h1>
-        <div className="header-actions">
-          <Link to={`/admin/users/edit/${user.id}`} className="btn btn-primary">
-            <Edit size={20} />
-            Edit User
-          </Link>
-          <Link to="/admin/users" className="btn btn-secondary">
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">User Not Found</h2>
+          <p className="text-gray-600 mb-4">The requested user could not be found.</p>
+          <Link 
+            to="/admin/users" 
+            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-violet-600 to-violet-700 text-white rounded-lg hover:from-violet-700 hover:to-violet-800 transition-all duration-200"
+          >
             Back to Users
           </Link>
         </div>
       </div>
+    )
+  }
 
-      <div className="details-container">
-        <div className="details-card">
-          <h3>Basic Information</h3>
-          <div className="details-grid">
-            <div className="detail-item">
-              <label>Name:</label>
-              <span>{user.name}</span>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div className="mb-4 sm:mb-0">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">User Details</h1>
+              <p className="text-gray-600">View and manage user information</p>
             </div>
-            <div className="detail-item">
-              <label>Email:</label>
-              <span>{user.email}</span>
+            <div className="flex space-x-3">
+              <Link 
+                to={`/admin/users/edit/${user.id}`} 
+                className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-violet-600 to-violet-700 text-white rounded-lg hover:from-violet-700 hover:to-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+              >
+                <Edit size={18} className="mr-2" />
+                Edit User
+              </Link>
+              <Link 
+                to="/admin/users" 
+                className="inline-flex items-center px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+              >
+                ← Back to Users
+              </Link>
             </div>
-            <div className="detail-item">
-              <label>Role:</label>
-              <span className={`role-badge ${user.role === 'admin' ? 'role-admin' : user.role === 'user' ? 'role-user' : 'role-store-owner'}`}>
-                {user.role === 'admin' ? 'Administrator' :
-                 user.role === 'user' ? 'User' :
-                 'Store Owner'}
-              </span>
-            </div>
-            <div className="detail-item">
-              <label>Address:</label>
-              <span>{user.address || 'Not provided'}</span>
-            </div>
-            <div className="detail-item">
-              <label>Created:</label>
-              <span>{new Date(user.created_at).toLocaleDateString()}</span>
-            </div>
-            {user.role === 'store_owner' && user.average_rating && (
-              <div className="detail-item">
-                <label>Average Store Rating:</label>
-                <span>{user.average_rating.toFixed(1)} / 5</span>
+          </div>
+        </div>
+
+        {/* User Profile Card */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-8">
+          {/* Profile Header */}
+          <div className="bg-gradient-to-r from-violet-600 to-purple-600 px-8 py-6">
+            <div className="flex items-center">
+              <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-6">
+                <span className="text-2xl font-bold text-white">
+                  {user.name.charAt(0).toUpperCase()}
+                </span>
               </div>
-            )}
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-1">{user.name}</h2>
+                <p className="text-violet-100 mb-2">{user.email}</p>
+                <span className={`inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full ${
+                  user.role === 'admin' ? 'bg-yellow-400 text-yellow-900' :
+                  user.role === 'user' ? 'bg-green-400 text-green-900' :
+                  'bg-blue-400 text-blue-900'
+                }`}>
+                  {user.role === 'admin' ? 'Administrator' :
+                   user.role === 'user' ? 'User' :
+                   'Store Owner'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Profile Details */}
+          <div className="px-8 py-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <label className="block text-sm font-medium text-gray-500 mb-1">Full Name</label>
+                <p className="text-lg font-semibold text-gray-900">{user.name}</p>
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-4">
+                <label className="block text-sm font-medium text-gray-500 mb-1">Email Address</label>
+                <p className="text-lg font-semibold text-gray-900">{user.email}</p>
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-4">
+                <label className="block text-sm font-medium text-gray-500 mb-1">User Role</label>
+                <p className="text-lg font-semibold text-gray-900">
+                  {user.role === 'admin' ? 'Administrator' :
+                   user.role === 'user' ? 'User' :
+                   'Store Owner'}
+                </p>
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-4">
+                <label className="block text-sm font-medium text-gray-500 mb-1">Member Since</label>
+                <p className="text-lg font-semibold text-gray-900">
+                  {new Date(user.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </p>
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                <label className="block text-sm font-medium text-gray-500 mb-1">Address</label>
+                <p className="text-lg font-semibold text-gray-900">
+                  {user.address || 'No address provided'}
+                </p>
+              </div>
+              
+              {user.role === 'store_owner' && user.average_rating && (
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                  <label className="block text-sm font-medium text-yellow-700 mb-1">Average Store Rating</label>
+                  <div className="flex items-center">
+                    <span className="text-2xl font-bold text-yellow-600 mr-2">
+                      {user.average_rating.toFixed(1)}
+                    </span>
+                    <span className="text-yellow-600">/ 5.0</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Info Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Account Status */}
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Account Status</h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600">Account Status</span>
+                <span className="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">
+                  Active
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600">Last Login</span>
+                <span className="text-gray-900 font-medium">
+                  {user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600">Profile Completion</span>
+                <span className="text-gray-900 font-medium">
+                  {user.address ? '100%' : '80%'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="space-y-3">
+              <Link 
+                to={`/admin/users/edit/${user.id}`}
+                className="w-full flex items-center px-4 py-3 bg-violet-50 text-violet-700 rounded-lg hover:bg-violet-100 transition-colors duration-200"
+              >
+                <Edit size={18} className="mr-3" />
+                Edit User Details
+              </Link>
+              <button className="w-full flex items-center px-4 py-3 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors duration-200">
+                <Trash2 size={18} className="mr-3" />
+                Delete User Account
+              </button>
+              <button className="w-full flex items-center px-4 py-3 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100 transition-colors duration-200">
+                <Eye size={18} className="mr-3" />
+                View Activity Log
+              </button>
+            </div>
           </div>
         </div>
       </div>
